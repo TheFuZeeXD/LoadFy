@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFuZeeXD | Preloader 5 | Cube</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 150px;
+            height: 150px;
+            perspective: 500px;
+            margin-bottom: 80px; /* Большой отступ снизу */
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate 6s infinite ease-in-out;
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .front {
+            transform: translateZ(75px);
+            background: rgba(255, 87, 34, 0.3);
+        }
+
+        .back {
+            transform: rotateY(180deg) translateZ(75px);
+            background: rgba(33, 150, 243, 0.3);
+        }
+
+        .right {
+            transform: rotateY(90deg) translateZ(75px);
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .left {
+            transform: rotateY(-90deg) translateZ(75px);
+            background: rgba(156, 39, 176, 0.3);
+        }
+
+        .top {
+            transform: rotateX(90deg) translateZ(75px);
+            background: rgba(255, 193, 7, 0.3);
+        }
+
+        .bottom {
+            transform: rotateX(-90deg) translateZ(75px);
+            background: rgba(0, 188, 212, 0.3);
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotateX(0) rotateY(0);
+            }
+            25% {
+                transform: rotateX(90deg) rotateY(90deg);
+            }
+            50% {
+                transform: rotateX(180deg) rotateY(180deg);
+            }
+            75% {
+                transform: rotateX(270deg) rotateY(270deg);
+            }
+            100% {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 40px;
+            color: white;
+            font-size: 18px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff5722, #2196f3);
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            display: none;
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+        }
+
+        p {
+            font-size: 1.2em;
+            max-width: 600px;
+            line-height: 1.6;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader">
+        <div class="loader">
+            <div class="cube">
+                <div class="face front"></div>
+                <div class="face back"></div>
+                <div class="face right"></div>
+                <div class="face left"></div>
+                <div class="face top"></div>
+                <div class="face bottom"></div>
+            </div>
+        </div>
+        <div class="loading-text">Loading</div>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Preloader Ready!</h1>
+        <p>All resources have finished loading. You can now enjoy the flawless performance of our website with its modern design and high-speed responsiveness.</p>
+        <button onclick="location.reload()" style="padding: 12px 30px; background: linear-gradient(to right, #6e45e2, #88d3ce); color: white; border: none; border-radius: 30px; font-size: 16px; cursor: pointer; transition: transform 0.3s;">Reloading</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.querySelector('.preloader');
+            const progressBar = document.querySelector('.progress');
+            const content = document.querySelector('.content');
+            
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            content.style.display = 'block';
+                        }, 500);
+                    }, 300);
+                }
+                progressBar.style.width = progress + '%';
+            }, 300);
+        });
+    </script>
+</body>
+</html>

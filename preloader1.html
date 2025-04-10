@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFuZeeXD | Preloader 1 | Loading bar</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1a1a1a;
+            font-family: Arial, sans-serif;
+        }
+
+        .preloader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-text {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 3px;
+            background: #333;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: #4285f4;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+
+        #content {
+            color: white;
+            display: none;
+            text-align: center;
+        }
+        #content.activeElement {
+            display: block;
+            animation: fadeIn 2.3s both;
+        }
+
+        @keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;} 
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader-container" id="preloader">
+        <div class="loading-text">Loading...</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+    </div>
+   
+        <div id="content">
+        <h1>Preloader Ready!</h1>
+        <p>All resources have finished loading. You can now enjoy the flawless performance of our website with its modern design and high-speed responsiveness.</p>
+        <button onclick="location.reload()" style="padding: 12px 30px; background: linear-gradient(to right, #6e45e2, #88d3ce); color: white; border: none; border-radius: 30px; font-size: 16px; cursor: pointer; transition: transform 0.3s;">Reloading</button>
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const loadingProgress = document.getElementById('loadingProgress');
+            
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    
+                    preloader.style.opacity = '0';
+                    preloader.style.transition = 'opacity 0.5s';
+                    
+                    
+                    setTimeout(function() {
+                        preloader.style.display = 'none';
+                        let content = document.querySelector("#content");
+                        content.classList.add("activeElement");
+                    }, 500);
+                }
+                loadingProgress.style.width = progress + '%';
+            }, 200);
+        });
+    </script>
+</body>
+</html>

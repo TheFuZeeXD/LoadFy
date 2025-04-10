@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFuZeeXD | Preloader 3 | Text Loading</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #121212;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .preloader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(0);
+            transition: transform 0.5s ease-out;
+        }
+        
+        .text-container {
+            position: relative;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s, color 0.5s;
+        }
+        
+        .loading-bar-container {
+            width: 300px;
+            height: 6px;
+            background-color: #444;
+            border-radius: 3px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #1a73e8, #4285f4, #8ab4f8);
+            border-radius: 3px;
+            transition: width 0.3s ease-out;
+            position: relative;
+        }
+        
+        .loading-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                            rgba(255,255,255,0) 0%, 
+                            rgba(255,255,255,0.7) 50%, 
+                            rgba(255,255,255,0) 100%);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes colorWave {
+            0% { color: #ff3366; }
+            14% { color: #ff8c42; }
+            28% { color: #ffea00; }
+            42% { color: #4cff00; }
+            56% { color: #00ffea; }
+            70% { color: #0066ff; }
+            84% { color: #cc00ff; }
+            100% { color: white; }
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) !important;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out !important;
+        }
+
+        #content {
+            color: white;
+            display: none;
+            text-align: center;
+        }
+        #content.activeElement {
+            display: block;
+            animation: fadeIn 2.3s both;
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;} 
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="preloader-container" id="preloader">
+        <div class="text-container">
+            <span class="letter">T</span>
+            <span class="letter">h</span>
+            <span class="letter">e</span>
+            <span class="letter">F</span>
+            <span class="letter">u</span>
+            <span class="letter">Z</span>
+            <span class="letter">e</span>
+            <span class="letter">e</span>
+            <span class="letter">X</span>
+            <span class="letter">D</span>
+        </div>
+        <div class="loading-bar-container">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <div id="content">
+        <h1>Preloader Ready!</h1>
+        <p>All resources have finished loading. You can now enjoy the flawless performance of our website with its modern design and high-speed responsiveness.</p>
+        <button onclick="location.reload()" style="padding: 12px 30px; background: linear-gradient(to right, #6e45e2, #88d3ce); color: white; border: none; border-radius: 30px; font-size: 16px; cursor: pointer; transition: transform 0.3s;">Reloading</button>
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const letters = document.querySelectorAll('.letter');
+            const preloaderContainer = document.querySelector('.preloader-container');
+            const loadingBarContainer = document.querySelector('.loading-bar-container');
+            const loadingProgress = document.querySelector('.loading-progress');
+            
+            
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    letter.style.opacity = '1';
+                    letter.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+            
+            
+            setTimeout(() => {
+                
+                preloaderContainer.style.transform = 'translateY(-20px)';
+                
+                
+                loadingBarContainer.style.opacity = '1';
+                
+               
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        
+                        
+                        loadingBarContainer.classList.add('fade-out');
+                        
+                       
+                        let currentLetter = 0;
+                        const colorInterval = setInterval(() => {
+                            if (currentLetter >= letters.length) {
+                                clearInterval(colorInterval);
+                                
+                                
+                                letters.forEach(letter => {
+                                    letter.style.color = 'white';
+                                    letter.style.textShadow = '0 0 8px rgba(255,255,255,0.7)';
+                                });
+                                
+                                
+                                const shineInterval = setInterval(() => {
+                                    letters.forEach((letter, idx) => {
+                                        const delay = idx * 0.1;
+                                        letter.style.transition = 'text-shadow 0.3s ' + delay + 's';
+                                        letter.style.textShadow = '0 0 15px rgba(255,255,255,0.9)';
+                                    });
+                                    
+                                    setTimeout(() => {
+                                        letters.forEach((letter, idx) => {
+                                            const delay = idx * 0.1;
+                                            letter.style.transition = 'text-shadow 0.5s ' + delay + 's';
+                                            letter.style.textShadow = '0 0 8px rgba(255,255,255,0.5)';
+                                        });
+                                    }, 500);
+                                }, 1500);
+                                
+                                
+                                setTimeout(() => {
+                                    setTimeout(() => {
+                                        let preloader = document.querySelector("#preloader");
+                                    preloader.style.display = "none";
+                                       let content = document.querySelector("#content");
+                                       content.classList.add("activeElement"); 
+                                    }, 500);
+                                }, 1000);
+                                
+                                return;
+                            }
+                            
+                            letters[currentLetter].style.animation = 'colorWave 1s forwards';
+                            currentLetter++;
+                        }, 150);
+                        
+                    } else {
+                        width += 1;
+                        loadingProgress.style.width = `${width}%`;
+                    }
+                }, 30);
+                
+            }, letters.length * 100 + 500);
+        });
+    </script>
+</body>
+</html>

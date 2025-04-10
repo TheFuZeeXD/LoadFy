@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Красивый Preloader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+        
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        
+        .loader {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+        
+        .loader-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            mix-blend-mode: overlay;
+            animation: rotate linear infinite;
+        }
+        
+        .circle-1 {
+            width: 100%;
+            height: 100%;
+            border-top-color: #fff;
+            border-bottom-color: #fff;
+            animation-duration: 2s;
+        }
+        
+        .circle-2 {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-left-color: rgba(255, 255, 255, 0.8);
+            border-right-color: rgba(255, 255, 255, 0.8);
+            animation-duration: 3s;
+            animation-direction: reverse;
+        }
+        
+        .circle-3 {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: rgba(255, 255, 255, 0.6);
+            border-bottom-color: rgba(255, 255, 255, 0.6);
+            animation-duration: 4s;
+        }
+        
+        .loading-text {
+            margin-top: 40px;
+            color: white;
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        
+        .loading-text::after {
+            content: '...';
+            position: absolute;
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 30px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: white;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        .content {
+            padding: 50px 20px;
+            text-align: center;
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: contentFadeIn 1s forwards 0.5s;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #6e45e2, #88d3ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        p {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes contentFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .loader {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .loading-text {
+                font-size: 18px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader-circle circle-1"></div>
+            <div class="loader-circle circle-2"></div>
+            <div class="loader-circle circle-3"></div>
+        </div>
+        <div class="loading-text">Загрузка</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <main class="content">
+        <h1>Preloader Ready!</h1>
+        <p>All resources have finished loading. You can now enjoy the flawless performance of our website with its modern design and high-speed responsiveness.</p>
+        <button onclick="location.reload()" style="padding: 12px 30px; background: linear-gradient(to right, #6e45e2, #88d3ce); color: white; border: none; border-radius: 30px; font-size: 16px; cursor: pointer; transition: transform 0.3s;">Reloading</button>
+    </main>
+
+    <script>
+        function simulateLoading() {
+            const progressBar = document.getElementById('progress-bar');
+            const preloader = document.querySelector('.preloader');
+            const content = document.querySelector('.content');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            content.style.display = 'block';
+                        }, 800);
+                    }, 300);
+                }
+                progressBar.style.width = `${progress}%`;
+            }, 200);
+        }
+        
+        window.addEventListener('load', simulateLoading);
+    </script>
+</body>
+</html>

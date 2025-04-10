@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFuZeeXD | Preloader 2 | Loading bar</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1a1a1a;
+            font-family: Arial, sans-serif;
+        }
+        
+        .preloader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .preloader-container.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .preloader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            transform: scale(1);
+            transition: transform 0.5s ease-out;
+        }
+        
+        .preloader.fade-out {
+            transform: scale(0.9);
+        }
+        
+        .loading-text {
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #b6b4b4;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4285f4, #34a853);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: #b6b4b4;
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(66, 133, 244, 0.2);
+            border-top: 3px solid #4285f4;
+            border-radius: 50%;
+            margin-left: 10px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .complete-check {
+            color: #34a853;
+            font-size: 24px;
+            margin-left: 10px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease-out;
+        }
+        
+        .complete-check.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .content {
+            color: white;
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader-container" id="preloader">
+        <div class="preloader" id="preloaderInner">
+            <div class="loading-text">
+                Loading
+                <div class="spinner" id="spinner"></div>
+                <div class="complete-check" id="completeCheck">✓</div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+    <h1>Preloader Ready!</h1>
+    <p>All resources have finished loading. You can now enjoy the flawless performance of our website with its modern design and high-speed responsiveness.</p>
+    <button onclick="location.reload()" style="padding: 12px 30px; background: linear-gradient(to right, #6e45e2, #88d3ce); color: white; border: none; border-radius: 30px; font-size: 16px; cursor: pointer; transition: transform 0.3s;">Reloading</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const preloaderInner = document.getElementById('preloaderInner');
+            const progressBar = document.getElementById('progress');
+            const progressText = document.getElementById('progressText');
+            const spinner = document.getElementById('spinner');
+            const completeCheck = document.getElementById('completeCheck');
+            
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.floor(progress) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    
+                    spinner.style.display = 'none';
+                    completeCheck.classList.add('show');
+                    
+                    
+                    document.querySelector('.loading-text').firstChild.textContent = 'Complete!';
+                    
+                    
+                    setTimeout(function() {
+                        preloader.classList.add('fade-out');
+                        preloaderInner.classList.add('fade-out');
+                        
+                        
+                        setTimeout(function() {
+                            preloader.style.display = 'none';
+                        }, 500);
+                    }, 1000); 
+                }
+            }, 300);
+        });
+    </script>
+</body>
+</html>
